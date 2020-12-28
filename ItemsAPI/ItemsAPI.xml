@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ItemsAPI</name>
+    </assembly>
+    <members>
+        <member name="M:ItemsAPI.Controllers.ItemsController.GetItem">
+            <summary>
+            Retrieves all Items data.
+            </summary>
+            <returns>The Items data.</returns>
+        </member>
+        <member name="M:ItemsAPI.Controllers.ItemsController.Create(ItemsAPI.Model.Items)">
+            <summary>
+            Creates an Item
+            </summary>
+             <remarks>
+            Sample request:
+            
+                POST api/item/create
+                {        
+                  "ItemName" : "Item4"
+                    "Price" :"100" 
+                }
+            </remarks>
+        </member>
+        <member name="M:ItemsAPI.Controllers.ItemsController.GetItembyId(System.Int32)">
+            <summary>
+            Retrieves an Item based on ID
+            </summary>
+            <returns>Item details based on the ID.</returns>
+        </member>
+        <member name="M:ItemsAPI.Controllers.ItemsController.Delete(System.Int32)">
+            <summary>
+            Deletes an Item
+            </summary>
+        </member>
+        <member name="M:ItemsAPI.Controllers.ItemsController.Update(ItemsAPI.Model.Items)">
+            <summary>
+            Updates an Item
+            </summary>
+             <remarks>
+            Sample request:
+            
+                POST api/item/update
+                {
+                    "ItemId" : "1" 
+                  "ItemName" : "Item4"
+                    "Price" :"100" 
+                }
+            </remarks>
+        </member>
+        <member name="M:ItemsAPI.Controllers.ItemsController.MaxPrice(System.String)">
+            <summary>
+            Returns max price for an Item
+            </summary>
+            <returns>Max price for the item name specified.</returns>
+        </member>
+    </members>
+</doc>

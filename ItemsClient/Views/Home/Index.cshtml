@@ -1,0 +1,83 @@
+﻿@model IEnumerable<ItemsClient.Models.ItemsViewModel>
+
+@{
+    ViewData["Title"] = "ListView";
+}
+
+@section Scripts
+{
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+            crossorigin="anonymous"></script>
+    @*<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>*@
+    <script src="~/lib/sweetalert2/dist/sweetalert2.js"></script>
+    <link href="~/lib/sweetalert2/dist/sweetalert2.css" rel="stylesheet" />
+    <script src="~/js/itemScript.js"></script>
+    <script src="~/js/itemDelScript.js"></script>
+    <script src="~/js/itemShowScript.js"></script>
+    <script src="~/js/itemUpdateScript.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+
+         }
+
+<h3>what would you like to do today?</h3>
+
+<p>
+    <button id="addBtn" class="btn btn-secondary">Add New Item</button>
+</p>
+<hr />
+<div id="addItemDiv" class="row">
+    <div class="col-md-12">
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="itemName"> Item Name</label>
+                <input type="text" id="itemName" class="form-control" />
+
+            </div>
+            <div class="form-group col-md-4">
+                <label for="itemPrice">Item Price</label>
+                <input id="itemPrice" type="text" class="form-control" />
+
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-4">
+
+        <input id="itemSubmit" type="submit" value="Create" class="btn btn-primary" />
+    </div>
+    <hr />
+</div>
+
+<div class="form-group col-9">
+    <h3>Items List</h3>
+    <div class="tbl-content">
+        <table id="itemsTable" class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Item ID</th>
+                    <th> Item Name </th>
+                    <th> Price </th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+<script type="text/javascript">
+
+    function delItem(itemId) {
+        //   alert(itemId);
+        window.itemDelScript.delAjax(itemId);
+    };
+
+    function updateItem(itemId) {
+        window.itemUpdateScript.updateAjax(itemId);
+    };
+
+
+</script>

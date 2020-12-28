@@ -1,0 +1,128 @@
+﻿@page "/"
+@using Newtonsoft.Json
+@inject HttpClient Http
+@using System.Text
+
+<div class="container">
+    <div class="row bg-light">
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Item Id</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Items.Any())
+                {
+                    @foreach (var item in Items)
+                    {
+                        <tr @onclick="(() => SetItemForUpdate(item))">
+                            <td>@item.ItemId</td>
+                            <td>@item.ItemName</td>
+                            <td>@item.Price</td>
+
+                            <td><button class="btn btn-danger" @onclick="(() => DeleteItem(item))">Delete</button></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr><td colspan="6"><strong>No Items available</strong></td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="row m-5">
+        <div class="col-5 bg-light m-2 justify-content-start">
+            <div class="p-3 mb-3 bg-primary text-white text-center">Add New Items</div>
+            <EditForm Model="@NewItem">
+                <div class="form-group">
+                    <label for="name">Items Name</label>
+                    <input type="text" id="name" class="form-control" @bind-value="@NewItem.ItemName" />
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="text" id="price" class="form-control" @bind="@NewItem.Price" />
+                </div>
+
+                <div class="text-center p-3 mb-3">
+                    <button class="btn btn-info" @onclick="AddNewItem"> Add Items</button>
+                </div>
+            </EditForm>
+        </div>
+        <div class="col-5 bg-light m-2 justify-content-end">
+            <div class="p-3 mb-1 bg-primary text-white text-center">Update Items</div>
+            <EditForm Model="@UpdateItem">
+                <div class="form-group">
+                    <label for="name">Items Name</label>
+                    <input type="text" id="name" class="form-control" @bind-value="@UpdateItem.ItemName" />
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="text" id="price" class="form-control" @bind="@UpdateItem.Price" />
+                </div>
+
+                <div class="text-center p-3 mb-3">
+                    <button class="btn btn-info" @onclick="UpdateItemData"> Update Items</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+@code {
+    List<BlazorClient.Data.Item> Items = new List<BlazorClient.Data.Item>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshItems();
+    }
+    private async Task RefreshItems()
+    {
+        var response = await Http.GetAsync("https://localhost:44317/api/Items");
+        string apiResponse = await response.Content.ReadAsStringAsync();
+        Items = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Data.Item>>(apiResponse);
+    }
+
+    public BlazorClient.Data.Item NewItem { get; set; } = new Data.Item();
+    private async Task AddNewItem()
+    {
+        if (NewItem.ItemName != null && NewItem.Price!= 0)
+
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(NewItem), Encoding.UTF8, "application/json");
+            await Http.PostAsync( "https://localhost:44317/api/Items/create", content);
+
+        }
+
+        NewItem = new Data.Item();
+        await RefreshItems();
+    }
+
+    BlazorClient.Data.Item UpdateItem = new Data.Item();
+    private void SetItemForUpdate(BlazorClient.Data.Item item)
+    {
+        UpdateItem = item;
+    }
+    private async Task UpdateItemData()
+    {
+        if (UpdateItem.ItemName != null && UpdateItem.Price != 0)
+
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(UpdateItem), Encoding.UTF8, "application/json");
+            await Http.PostAsync("https://localhost:44317/api/Items/update", content);
+            UpdateItem.ItemName = null;
+            UpdateItem.Price = 0;
+        }
+
+
+        await RefreshItems();
+    }
+    private async Task DeleteItem(BlazorClient.Data.Item item)
+    {
+
+        await RefreshItems();
+    }
+}
